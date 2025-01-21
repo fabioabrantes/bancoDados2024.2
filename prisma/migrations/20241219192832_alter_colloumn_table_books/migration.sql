@@ -1,7 +1,8 @@
 /*
   Warnings:
 
-  - Added the required column `description` to the `books` table without a default value. This is not possible if the table is not empty.
+  - You are about to drop the column `description` on the `books` table. All the data in the column will be lost.
+  - Added the required column `description_type` to the `books` table without a default value. This is not possible if the table is not empty.
 
 */
 -- RedefineTables
@@ -11,9 +12,9 @@ CREATE TABLE "new_books" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "author" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-    "userId" TEXT,
-    CONSTRAINT "books_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "description_type" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
+    CONSTRAINT "books_userId_fkey" FOREIGN KEY ("userId") REFERENCES "users" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 INSERT INTO "new_books" ("author", "id", "title", "userId") SELECT "author", "id", "title", "userId" FROM "books";
 DROP TABLE "books";

@@ -1,24 +1,19 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
 
-const prisma = new PrismaClient();
+import  RegisterUser from './useCase/registerUser';
 
 const server = express();
 server.use(express.json());
 
 server.post('/users', async (req, res) => {
   const dados = req.body;
+  const user = {
+    cpf: dados.cpf,
+    name: dados.name,
+    email: dados.email,// default role é 'user'
+  }
   //validação
-
-  const user = await prisma.user.create({
-    data: {
-      email: dados.email,
-      cpf: dados.cpf,
-      name: dados.description
-    }
-  });
-
- 
+  const userCreated = RegisterUser.execute(user);
   res.status(201).json({ message: "ucadastro realizado com sucesso" });
 
 });
