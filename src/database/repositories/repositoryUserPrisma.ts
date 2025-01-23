@@ -9,28 +9,52 @@ class UserRepositoryPrisma {
     this.prisma = new PrismaClient();
   }
 
-  async registerUser(user: Omit<UserModel, 'id'>): Promise<UserModel> {
-    return this.prisma.user.create({
-      data: user
+  async registerUser(user: UserModel) {
+    return await this.prisma.user.create({
+      data: {
+        name: user.name,
+        cpf: user.cpf,
+        email: user.email
+      }
     });
   }
 
-  async findByCpf(cpf: string): Promise<UserModel | null> {
-    return this.prisma.user.findUnique({
+  async findByCpf(cpf: string) {
+    return await this.prisma.user.findUnique({
       where: {
         cpf
       }
-    })
+    });
   }
 
-  async findAll(): Promise<UserModel[]> {
-    return this.prisma.user.findMany({
+  async findAll() {
+    return await this.prisma.user.findMany({
       orderBy: {
-        name: 'asc'
+        name: "asc"
       }
     });
   }
 
+  async removeUser(id:string){
+     await this.prisma.user.delete({
+      where:{
+        id
+      }
+     });
+  }
+
+  async updateUser(id: string, user: UserModel) {
+    await this.prisma.user.update({
+      where: {
+        id
+      },
+      data: {
+        name: user.name,
+        cpf: user.cpf,
+        email: user.email
+      }
+    });
+  }
 }
 
 
