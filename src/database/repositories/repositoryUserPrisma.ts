@@ -59,7 +59,7 @@ class UserRepositoryPrisma {
     });
   }
 
-  async updateUser(id: string, user: UserModel) {
+  async updateUser(id: string, user: Omit<UserModel, 'id'>) {
     await this.prisma.user.update({
       where: {
         id
