@@ -1,0 +1,13 @@
+
+services:
+  postgres:
+    container_name: bd-boks-container
+    image: bitnami/postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USERNAME=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DATABASE=databasBooks
+    volumes:
+      - ./data/pg:/data/postgres

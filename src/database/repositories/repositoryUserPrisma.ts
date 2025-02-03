@@ -9,12 +9,13 @@ class UserRepositoryPrisma {
     this.prisma = new PrismaClient();
   }
 
-  async registerUser(user: UserModel) {
+  async registerUser(user: Omit<UserModel, 'id'>) {
     return await this.prisma.user.create({
       data: {
         name: user.name,
         cpf: user.cpf,
-        email: user.email
+        email: user.email,
+        password: user.password
       }
     });
   }
@@ -27,6 +28,21 @@ class UserRepositoryPrisma {
     });
   }
 
+  async findById(id: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id
+      }
+    });
+  }
+
+  async findByEmail(email: string) {
+    return await this.prisma.user.findFirst({
+      where: {
+        email
+      }
+    });
+  }
   async findAll() {
     return await this.prisma.user.findMany({
       orderBy: {
@@ -35,12 +51,12 @@ class UserRepositoryPrisma {
     });
   }
 
-  async removeUser(id:string){
-     await this.prisma.user.delete({
-      where:{
+  async removeUser(id: string) {
+    await this.prisma.user.delete({
+      where: {
         id
       }
-     });
+    });
   }
 
   async updateUser(id: string, user: UserModel) {
