@@ -52,7 +52,7 @@ class UserRepositoryPrisma {
   }
 
   async removeUser(id: string) {
-    await this.prisma.user.delete({
+    return await this.prisma.user.delete({
       where: {
         id
       }
@@ -60,7 +60,7 @@ class UserRepositoryPrisma {
   }
 
   async updateUser(id: string, user: Omit<UserModel, 'id'>) {
-    await this.prisma.user.update({
+    return await this.prisma.user.update({
       where: {
         id
       },

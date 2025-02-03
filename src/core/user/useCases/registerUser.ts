@@ -1,21 +1,27 @@
 import repositoryUserPrisma from "../../../database/repositories/repositoryUserPrisma";
 import { UserModel } from '../model/User';
 
-type MessageResponse = {
-  message: string;
+type MessageResponseSuccess = {
+  body: UserModel;
   status: number;
 }
+
+type MessageResponseError = {
+  body: string;
+  status: number;
+}
+
 class RegisterUserUseCase {
 
-  async execute(user: Omit<UserModel,'id'>): Promise<MessageResponse> {
+  async execute(user: Omit<UserModel,'id'>): Promise<MessageResponseSuccess | MessageResponseError> {
 
     let userExist = await repositoryUserPrisma.findByCpf(user.cpf);
     if (userExist !== null) {
-      return { message: "Error: cliente já existe no banco.", status: 400 }
+      return { body: "Error: cliente já existe no banco.", status: 400 }
     }
    
-    await repositoryUserPrisma.registerUser(user);
-    return { message: "Success: Registro realizado com sucesso.", status: 201 };
+    const userBD = await repositoryUserPrisma.registerUser(user);
+    return { body: userBD, status: 201 };
   }
 }
 

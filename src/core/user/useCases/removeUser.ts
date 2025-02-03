@@ -1,21 +1,25 @@
 import repositoryUserPrisma from "../../../database/repositories/repositoryUserPrisma";
+import { UserModel } from '../model/User';
 
-
-type MessageResponse = {
-  message: string;
+type MessageResponseSuccess = {
+  body: UserModel;
+  status: number;
+}
+type MessageResponseError = {
+  body: string;
   status: number;
 }
 class RemoveUserUseCase {
 
-  async execute(id: string): Promise<MessageResponse> {
+  async execute(id: string): Promise<MessageResponseError | MessageResponseSuccess> {
 
     const userExist = await repositoryUserPrisma.findById(id);
     if (!userExist) {
-      return { message: "Error: cliente naõ existe.", status: 400 }
+      return { body: "Error: cliente naõ existe.", status: 400 }
     }
 
-    await repositoryUserPrisma.removeUser(id);
-    return { message: "Success: Remoção realizado com sucesso.", status: 200 };
+    const userBD = await repositoryUserPrisma.removeUser(id);
+    return { body: userBD, status: 200 };
   }
 }
 

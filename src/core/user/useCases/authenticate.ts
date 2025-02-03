@@ -2,16 +2,22 @@ import { sign } from "jsonwebtoken";
 import { compare } from "bcryptjs";
 
 import repositoryUserPrisma from "../../../database/repositories/repositoryUserPrisma";
+import { UserModel } from '../model/User';
 
-type Params = {
+type ParamsBody = {
   email: string;
   password: string;
+}
+
+type MessageResponse = {
+  body: string;
+  status: number;
 }
 
 class Authenticate {
 
 
-  async execute({ email, password }: Params) {
+  async execute({ email, password }: ParamsBody): Promise<MessageResponse> {
 
     //validação dos campus email e passowrd
 
@@ -19,13 +25,13 @@ class Authenticate {
     const user = await repositoryUserPrisma.findByEmail(email);
 
     if (!user) {
-      return { message: "Error: email ou password inválidos.", status: 400 }
+      return { body: "Error: email ou password inválidos.", status: 400 }
     }
 
     const verifyPassword = await compare(password, user.password);
 
     if (!verifyPassword) {
-      return { message: "Error: email ou password inválidos.", status: 400 }
+      return { body: "Error: email ou password inválidos.", status: 400 }
     }
 
     const token = sign(
@@ -39,7 +45,7 @@ class Authenticate {
     );
 
 
-    return { token };
+    return { body: token, status: 200 };
 
   }
 }

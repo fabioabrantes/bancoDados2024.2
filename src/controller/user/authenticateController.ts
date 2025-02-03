@@ -7,7 +7,7 @@ class AuthenticateController {
 
 
     const result = await AuthenticateUC.execute({ email, password });
-    res.status(result.status).json(result.message);
+    res.status(result.status).json(result.body);
   }
 }
 

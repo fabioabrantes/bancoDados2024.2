@@ -18,7 +18,7 @@ class RegisterUserController {
     let passwordCRiptografado = await hash(password,4);
     const result = await RegisterUserUseCase.execute({ cpf, name, email, password:passwordCRiptografado });
 
-    res.status(result.status).json(result.message);
+    res.status(result.status).json(result.body);
   }
 }
 
