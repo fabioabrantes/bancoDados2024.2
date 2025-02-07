@@ -10,7 +10,7 @@ class UserRepositoryPrisma {
   }
 
   async registerUser(user: Omit<UserModel, 'id'>) {
-    return await this.prisma.user.create({
+    let userCreated = await this.prisma.user.create({
       data: {
         name: user.name,
         cpf: user.cpf,
@@ -18,6 +18,7 @@ class UserRepositoryPrisma {
         password: user.password
       }
     });
+    return userCreated;
   }
 
   async findByCpf(cpf: string) {

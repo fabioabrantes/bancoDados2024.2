@@ -1,4 +1,5 @@
 import repositoryUserPrisma from "../../../database/repositories/repositoryUserPrisma";
+import { ErrorCustom } from "../../../errors/ErrorsCustom";
 import { UserModel } from '../model/User';
 
 type MessageResponseSuccess = {
@@ -15,7 +16,7 @@ class RemoveUserUseCase {
 
     const userExist = await repositoryUserPrisma.findById(id);
     if (!userExist) {
-      return { body: "Error: cliente naõ existe.", status: 400 }
+      throw new ErrorCustom(400,"Error: cliente naõ existe.");
     }
 
     const userBD = await repositoryUserPrisma.removeUser(id);

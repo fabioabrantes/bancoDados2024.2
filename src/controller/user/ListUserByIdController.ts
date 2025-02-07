@@ -8,7 +8,8 @@ type Params = {
 
 class ListUserByIdController {
   async handle(req: Request, res: Response) {
-    const { id } = req.params as Params;
+    const id = req.userId;
+   /*  const { id } = req.params as Params; */
 
     // validar os campos cpf, name e email usando a lib zod
     
